@@ -15,7 +15,7 @@ The microservice should provide credit information: Is a specific user allowed t
 - [x] use spring boot initializer
 - [x] add hello worldish controller
 - [ ] add unit tests
-- [ ] add integration tests
+- [x] add integration tests
 - [ ] add database with migrations
 - [ ] add event sourcing
 - [ ] add authentication and authorization

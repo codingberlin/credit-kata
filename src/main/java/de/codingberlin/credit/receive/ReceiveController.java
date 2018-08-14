@@ -2,6 +2,7 @@ package de.codingberlin.credit.receive;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReceiveController {
 
 	@RequestMapping("/ispermitted")
-	String isPermitted() {
+	public @ResponseBody String isPermitted() {
 		return "true";
 	}
 
