@@ -27,7 +27,7 @@ public class CreditApplicationTests {
 	@Test
 	public void contextLoads() {
 		final String url = String.format("http://localhost:%s/ispermitted?user=%s&orderId=%s&credit=%s", port, ANY_USER, ANY_ORDER_ID, 42);
-		assertThat(this.restTemplate.getForObject(url, String.class)).isEqualTo("true");
+		assertThat(this.restTemplate.getForObject(url, String.class)).contains("APPROVED");
 	}
 
 }
