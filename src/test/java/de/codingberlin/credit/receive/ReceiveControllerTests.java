@@ -73,7 +73,7 @@ public class ReceiveControllerTests {
 	public void shouldAllowWhenReceiveServiceAllows() throws Exception {
 		String url = String.format("/ispermitted?userId=%s&orderId=%s&credit=%s", ANY_USER_ID.getId(), ANY_ORDER_ID.getId(), ANY_VALID_CREDIT);
 
-		given(receiveService.isPermitted(ANY_USER_ID, new Credit(ANY_VALID_CREDIT))).willReturn(ANY_APPROVAL);
+		given(receiveService.isPermitted(ANY_ORDER_ID, ANY_USER_ID, new Credit(ANY_VALID_CREDIT))).willReturn(ANY_APPROVAL);
 
 		mockMvc.perform(get(url))
 				.andExpect(status().isOk())

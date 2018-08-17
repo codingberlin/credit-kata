@@ -37,7 +37,7 @@ public class ReceiveController {
 			@RequestParam(value = "userId", required = true) UserId userId,
 			@RequestParam(value = "credit", required = true) Credit credit,
 			@RequestParam(value = "orderId", required = true) OrderId orderId) {
-		return receiveService.isPermitted(userId, credit);
+		return receiveService.isPermitted(orderId, userId, credit);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
