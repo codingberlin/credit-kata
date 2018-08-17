@@ -23,7 +23,9 @@ public class ReceiveService {
 	private CreditForOrderRepository creditForOrderRepository;
 
 	public Approval isPermitted(OrderId orderId, UserId userId, Credit credit) {
-		if (credit.getAmount() > 250.0) {
+		double currentCreditAmount = creditForOrderRepository.creditOfUser(userId.getId()).orElse(0.0);
+		double futureCreditAmount = currentCreditAmount + credit.getAmount();
+		if (futureCreditAmount > 250.0) {
 			return Approval.DENIED;
 		} else {
 			Instant lifetime = clock.instant().plus(1, ChronoUnit.HOURS);

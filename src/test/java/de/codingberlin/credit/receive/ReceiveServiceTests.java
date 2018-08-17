@@ -18,11 +18,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -52,15 +55,30 @@ public class ReceiveServiceTests {
 	@Test
 	public void shouldApproveForOneHourWhenAmountIs250EUR() {
 		final Approval approval = receiveService.isPermitted(ANY_ORDER_ID, ANY_USER_ID, new Credit(250.0));
+
 		assertThat(approval).isEqualTo(Approval.approved(Instant.parse("2018-01-01T01:00:00Z")));
 		verify(creditForOrderRepository, times(1))
 				.save(CreditForOrder.buildFrom(ANY_USER_ID, ANY_ORDER_ID, new Credit(250.0), Instant.parse("2018-01-01T01:00:00Z")));
 	}
 
 	@Test
-	public void shouldReturnFalseForMoreThan250EUR() {
+	public void shouldDenyForMoreThan250EUR() {
 		final Approval approval = receiveService.isPermitted(ANY_ORDER_ID, ANY_USER_ID, new Credit(250.01));
+
 		assertThat(approval).isEqualTo(Approval.DENIED);
+		verify(creditForOrderRepository, times(0))
+				.save(any());
+	}
+
+	@Test
+	public void shouldDenyForLessThan250EURWhenPreviousCreditsAreTooHigh() {
+		when(creditForOrderRepository.creditOfUser(anyString())).thenReturn(Optional.of(240.0));
+
+		final Approval approval = receiveService.isPermitted(ANY_ORDER_ID, ANY_USER_ID, new Credit(20));
+
+		assertThat(approval).isEqualTo(Approval.DENIED);
+		verify(creditForOrderRepository, times(1))
+				.creditOfUser(ANY_USER_ID.getId());
 		verify(creditForOrderRepository, times(0))
 				.save(any());
 	}

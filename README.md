@@ -16,7 +16,7 @@ The microservice should provide credit information: Is a specific user allowed t
 - [x] add hello worldish controller
 - [x] add unit tests
 - [x] add integration tests
-- [ ] add database with migrations
+- [x] add database with migrations
 - [ ] add event sourcing
 - [ ] add authentication and authorization
 
